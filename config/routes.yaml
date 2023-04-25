@@ -4,19 +4,23 @@
 #         namespace: App\Controller
 #     type: attribute
 
-hello:
-    path: /hello
-    controller: App\Controller\HelloController::index
+# hello:
+#     path: /hello
+#     controller: App\Controller\HelloController::index
 
-helloName:
-    path: /helloname/{name} #url
-    controller: App\Controller\HelloController::helloName #método a ser executado
+# helloName:
+#     path: /helloname/{name} #url
+#     controller: App\Controller\HelloController::helloName #método a ser executado
 
 
-teste:
-    path: /teste
-    controller: App\Controller\TesteController::index
+# teste:
+#     path: /teste
+#     controller: App\Controller\TesteController::index
 
-detalhes:
-    path: /teste/detalhes/{id} #url
-    controller: App\Controller\TesteController::detalhes #método a ser executado
+# detalhes:
+#     path: /teste/detalhes/{id} #url
+#     controller: App\Controller\TesteController::detalhes #método a ser executado
+
+controllers:
+    resource: ../src/Controller/
+    type: annotation
