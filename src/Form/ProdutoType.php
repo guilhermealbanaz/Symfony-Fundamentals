@@ -25,7 +25,7 @@ class ProdutoType extends AbstractType
                 ['label' => 'Valor: ']
             )
             ->add(
-                'categoria_id',
+                'categoria',
                  EntityType::class,
                 [   
                     'class' => Categoria::class,
