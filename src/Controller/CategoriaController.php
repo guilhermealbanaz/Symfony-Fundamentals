@@ -3,38 +3,40 @@ namespace App\Controller;
 
 use App\Entity\Categoria;
 use App\Form\CategoriaType;
+use App\Repository\CategoriaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CategoriaController extends AbstractController
 {
     #[Route("/categoria", name:"categoria_index")]
-    public function index(EntityManagerInterface $em): Response
+    public function index(CategoriaRepository $categoriaRepository): Response
     {   
-        //$em é um objeto que vai auxiliar a execução de ações no banco de dados
-        $categoria = new Categoria();
-        $categoria->setDescricaocategoria("Games");
-        $msg = "";
-        try{
-            $em->persist($categoria); // salvar a persistência em nivel de memória (não vai salvar efetivamente ainda)
-            // para economizar hardware e custo, ele salva tarefas em niveis de memória e executa tudo ao mesmo tempo para 
-            // não custar mais conexões.
-            $em->flush(); //executa em definitivo no banco de dados
-            $msg = 'Categoria cadastrada com sucesso!';
-        }catch(Exception $e){
-            $msg = 'Erro ao cadastrar categoria!';
-        }
-        return new Response("<h1>". $msg."</h1>" );
+        $data['categorias'] = $categoriaRepository->findAll();
+        $data['titulo'] = 'Gerenciar Categorias';
+
+        return $this->render('categoria/index.html.twig', $data);
     }
 
     #[Route("/categoria/adicionar", name:"categoria_adicionar")]
-    public function adicionar(): Response
+    public function adicionar(Request $request, EntityManagerInterface $em): Response // request-> contém as informações da requisição. em-> insere no banco de dados
     {
-        $form = $this->createForm(CategoriaType::class);
+        $msg = '';
+        $categoria = new Categoria();
+        $form = $this->createForm(CategoriaType::class, $categoria);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            //salvar a nova categoria no BD
+            $em->persist($categoria);
+            $em->flush();
+            $msg = 'Categoria adicionada com sucesso!';
+        }
         $data['titulo'] = 'Adicionar nova categoria';
         $data['form'] = $form;
+        $data['msg'] = $msg;
 
         return $this->render('categoria/form.html.twig', $data);
     }

@@ -2,5 +2,7 @@
 {% block title %}{{titulo}}{%endblock%}
 {% block body %}
 <h1>{{titulo}}</h1>
+<a href='{{path('categoria_index')}}' class='btn btn-success'> Voltar </a> 
+<p>{{ msg }}</p>
 {{form(form)}}
 {% endblock %}
