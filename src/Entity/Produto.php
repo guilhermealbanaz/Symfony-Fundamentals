@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProdutoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProdutoRepository::class)]
 class Produto
@@ -12,6 +13,7 @@ class Produto
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("api_list")]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
@@ -21,6 +23,7 @@ class Produto
         max: 50,
         minMessage: 'O campo nome do produto deve conter mais de {{ limit }} caracteres',
         maxMessage: 'O campo nome do produto deve conter no máximo {{ limit }} caracteres')]
+    #[Groups("api_list")]
     private ?string $nomeproduto = null;
 
     #[ORM\Column]
@@ -28,10 +31,12 @@ class Produto
     #[Assert\Positive(
         message: 'O valor do produto só pode ser positivo!'
     )]
+    #[Groups("api_list")]
     private ?float $valor = null;
 
     #[ORM\ManyToOne(inversedBy: 'produtos')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("api_list")]
     private ?Categoria $categoria = null;
 
     public function getId(): ?int
