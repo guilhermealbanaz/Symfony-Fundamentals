@@ -2,7 +2,17 @@
 {% block title %}{{titulo}}{%endblock%}
 {% block body %}
 <h1>{{titulo}}</h1>
-<a href='{{path('produto_adicionar')}}' class='btn btn-success'> Adicionar </a> 
+<form method='GET'>
+    <div class="row">
+        <div class='col'>
+            <a href='{{path('produto_adicionar')}}' class='btn btn-success'> Adicionar </a> 
+        </div>
+        <div class='col'>
+            <input type='text' placeholder='Pesquisar por nome' name='nome' value='{{ nomeproduto }}' >
+            <button class='btn btn-primary' class='ml-3'>Pesquisar</button>
+        </div>      
+    </div>
+</form>
 <table class='table'>
     <thead>
         <tr>
@@ -14,6 +24,15 @@
         </tr>
     </thead>
     <tbody>
+        {% if produtos == false %}
+        <tr class='text-center'>
+            <td ></td>
+            <td ></td>
+            <td style='color: red;'>Não há produtos com esse nome!</td>
+            <td ></td>
+            <td ></td>
+        </tr>
+        {% endif %}
         {% for produto in produtos %}
             <tr>
                 <td>{{produto.id}}</td>

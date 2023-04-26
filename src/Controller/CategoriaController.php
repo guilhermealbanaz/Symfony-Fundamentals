@@ -15,11 +15,15 @@ class CategoriaController extends AbstractController
 {
     #[Route("/categoria", name:"categoria_index")]
     #[IsGranted("ROLE_USER")]
-    public function index(CategoriaRepository $categoriaRepository): Response
+    public function index(Request $request, CategoriaRepository $categoriaRepository): Response
     {   
+        $categoria = $request->query->get('categoria');
         //reestringir a pagina apenas aos ROLE_USER
         // $this->denyAccessUnlessGranted('ROLE_USER');
-        $data['categorias'] = $categoriaRepository->findAll();
+        is_null($categoria) ? 
+        $data['categorias'] = $categoriaRepository->findAll()
+        : $data['categorias'] = $categoriaRepository->findCategoriaByLikeNome($categoria);
+        $data['descricaocategoria'] = $categoria;
         $data['titulo'] = 'Gerenciar Categorias';
 
         return $this->render('categoria/index.html.twig', $data);
